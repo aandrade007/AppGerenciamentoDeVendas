@@ -5,6 +5,7 @@ Sistema para registro de transações, controle de estoque e geração de relat�
 ---
 ## Protótipo no [Figma](https://www.figma.com/design/mJJOfjB9PuBDPMkZ6xPSFH/ProtSalesMaster?node-id=0-1&t=6dEkDMxxCqG7cRHh-1)
 <br>
+
 ## 📅 Cronograma de Entregas
 
 * **Entrega 01:** Backlog do Produto Priorizado, Sprints, User Stories e Protótipo Figma.

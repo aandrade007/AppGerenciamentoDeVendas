@@ -1,79 +1,41 @@
-# React + TypeScript + Vite
+# 🛒 App de Gerenciamento de Vendas
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sistema para registro de transações, controle de estoque e geração de relatórios de performance.
 
-<<<<<<< HEAD
-Currently, two official plugins are available:
-=======
 ---
 ## Protótipo no [Figma](https://www.figma.com/design/mJJOfjB9PuBDPMkZ6xPSFH/ProtSalesMaster?node-id=0-1&t=6dEkDMxxCqG7cRHh-1)
 <br>
->>>>>>> 82f9a8a4ed2ac1532f1438fa6014a3990a5f6352
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📅 Cronograma de Entregas
 
-## React Compiler
+* **Entrega 01:** Backlog do Produto Priorizado, Sprints, User Stories e Protótipo Figma.
+* **Entrega 02:** Implementação de 4 funcionalidades (Front-end em JavaScript).
+* **Entrega 03:** Implementação de 4 funcionalidades (Full-stack: Front + Back-end).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 📋 Product Backlog Priorizado
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 🏃 Sprint 1: Interface e Fluxo de Venda (Foco: Entrega 02 - Front)
+Objetivo: Criar a experiência do usuário e as lógicas de interface sem persistência em banco de dados (usando apenas JS no Front).
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1.  **US01 - Autenticação (Interface):** Como vendedor, quero ver uma tela de login para entender como acessarei o sistema.
+2.  **US02 - Busca de Produtos:** Como vendedor, quero filtrar produtos por nome em tempo real para agilizar a venda.
+3.  **US03 - Carrinho de Compras:** Como vendedor, quero adicionar itens a um carrinho e ver o cálculo automático do total da venda.
+4.  **US04 - Cadastro de Produtos (Interface):** Como gerente, quero um formulário validado para cadastrar novos itens no estoque.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 🏃 Sprint 2: Integração e Persistência (Foco: Entrega 03 - Full-stack)
+Objetivo: Conectar a interface a um servidor e banco de dados para tornar o sistema funcional e persistente.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+5.  **US05 - Login com JWT:** Como sistema, quero validar as credenciais no servidor para garantir acesso seguro.
+6.  **US06 - Registro de Venda Real:** Como vendedor, quero finalizar a compra e que o sistema dê baixa automática no estoque no banco de dados.
+7.  **US07 - Dashboard de Performance:** Como gerente, quero ver o faturamento total do dia baseado nas vendas reais registradas.
+8.  **US08 - Alerta de Reposição:** Como sistema, quero identificar produtos com estoque abaixo de 5 unidades e exibir um alerta visual.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 🏃 Sprint 3: Relatórios de Performance
+Objetivo: Gerar métricas e relatórios avançados para apoiar a tomada de decisão da gestão.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+9.  **US09 - Relatório de Curva ABC:** Como gerente, quero visualizar quais são os produtos mais e menos vendidos para otimizar as compras.
+10. **US10 - Histórico de Vendas:** Como gerente, quero visualizar uma lista detalhada das transações concluídas filtradas por período.
+11. **US11 - Exportação de Dados:** Como gerente, quero exportar os relatórios de faturamento para arquivo PDF.
+12. **US12 - Controle de Acesso:** Como sistema, quero restringir o acesso à aba de relatórios apenas para usuários com perfil de gerente.

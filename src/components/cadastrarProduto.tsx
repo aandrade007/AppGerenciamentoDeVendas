@@ -6,23 +6,20 @@ interface EstoqueProps {
 }
 
 export interface Produto {
-  id: string; // Agora é uma string (UUID)
+  id: string;
   nome: string;
   sku: string;
   precoCusto: number;
   precoVenda: number;
   quantidade: number;
-  usuarioId: string; // Adicionado para sabermos de quem é o produto
+  usuarioId: string;
 }
 
 export default function CadastrarProduto({ onNavigate }: EstoqueProps) {
-  // Pega o usuário logado para associarmos o produto a ele
   const usuario = JSON.parse(localStorage.getItem("usuarioLogado") || "{}");
   const API_URL = "http://localhost:3333";
 
-  // Note que o editandoId agora é string
   const [editandoId, setEditandoId] = useState<string | null>(null);
-
   const [nome, setNome] = useState("");
   const [sku, setSku] = useState("");
   const [precoCusto, setPrecoCusto] = useState<number | "">("");
@@ -37,7 +34,6 @@ export default function CadastrarProduto({ onNavigate }: EstoqueProps) {
     }
   }, []);
 
-  // Busca os dados do produto direto do Banco de Dados
   async function buscarProdutoParaEdicao(id: string) {
     try {
       const resposta = await fetch(`${API_URL}/produtos/${id}`);
@@ -70,23 +66,28 @@ export default function CadastrarProduto({ onNavigate }: EstoqueProps) {
   }
 
   async function salvarProduto() {
-    if (!nome || !sku || Number(precoVenda) <= 0 || Number(quantidade) < 0) {
-      alert("Preencha todos os campos obrigatórios corretamente.");
+    if (
+      !nome.trim() || 
+      !sku.trim() || 
+      precoVenda === "" || Number(precoVenda) <= 0 || 
+      quantidade === "" || Number(quantidade) < 0 ||
+      precoCusto === "" || Number(precoCusto) <= 0
+    ) {
+      alert("Preencha todos os campos obrigatórios corretamente (sem deixar apenas espaços).");
       return;
     }
 
     const produtoData = {
-      nome,
-      sku,
+      nome: nome.trim(),
+      sku: sku.trim().toUpperCase(),
       precoCusto: Number(precoCusto),
       precoVenda: Number(precoVenda),
       quantidade: Number(quantidade),
-      usuarioId: usuario.id // Mandando a ID do dono do produto pro backend!
+      usuarioId: usuario.id
     };
 
     try {
       if (editandoId) {
-        // MODO EDIÇÃO
         const resposta = await fetch(`${API_URL}/produtos/${editandoId}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -99,8 +100,8 @@ export default function CadastrarProduto({ onNavigate }: EstoqueProps) {
           alert("Erro ao atualizar o produto.");
           return;
         }
-      } else {
-        // MODO CADASTRO
+      } 
+      else {
         const resposta = await fetch(`${API_URL}/produtos`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -156,7 +157,7 @@ export default function CadastrarProduto({ onNavigate }: EstoqueProps) {
             placeholder="Ex: AP-001"
             value={sku}
             onChange={(e) => setSku(e.target.value)}
-            className="w-full mt-1 p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:ring-1 focus:ring-blue-600 outline-none transition-all"
+            className="w-full mt-1 p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:ring-1 focus:ring-blue-600 outline-none transition-all uppercase"
           />
         </div>
 
@@ -167,7 +168,7 @@ export default function CadastrarProduto({ onNavigate }: EstoqueProps) {
               type="number"
               placeholder="R$ 0,00"
               value={precoCusto}
-              onChange={(e) => setPrecoCusto(Number(e.target.value))}
+              onChange={(e) => setPrecoCusto(e.target.value === "" ? "" : Number(e.target.value))}
               className="w-full mt-1 p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:ring-1 focus:ring-blue-600 outline-none transition-all"
             />
           </div>
@@ -178,7 +179,7 @@ export default function CadastrarProduto({ onNavigate }: EstoqueProps) {
               type="number"
               placeholder="R$ 0,00"
               value={precoVenda}
-              onChange={(e) => setPrecoVenda(Number(e.target.value))}
+              onChange={(e) => setPrecoVenda(e.target.value === "" ? "" : Number(e.target.value))}
               className="w-full mt-1 p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:ring-1 focus:ring-blue-600 outline-none transition-all"
             />
           </div>
@@ -192,7 +193,7 @@ export default function CadastrarProduto({ onNavigate }: EstoqueProps) {
             type="number"
             placeholder="Ex: 10"
             value={quantidade}
-            onChange={(e) => setQuantidade(Number(e.target.value))}
+            onChange={(e) => setQuantidade(e.target.value === "" ? "" : Number(e.target.value))}
             className="w-full mt-1 p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:ring-1 focus:ring-blue-600 outline-none transition-all"
           />
         </div>

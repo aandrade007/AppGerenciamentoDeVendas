@@ -9,7 +9,8 @@ interface RelatoriosProps {
 
 export default function Relatorios({ onNavigate }: RelatoriosProps) {
   const usuario = JSON.parse(localStorage.getItem("usuarioLogado") || "{}");
-  const chaveHistorico = `historicoVendas_${usuario.email}`;
+  const API_URL = "http://localhost:3333"; // Nossa URL do Backend
+
   const [vendasTotais, setVendasTotais] = useState(0);
   const [totalPedidos, setTotalPedidos] = useState(0);
   const [ticketMedio, setTicketMedio] = useState(0);
@@ -19,18 +20,43 @@ export default function Relatorios({ onNavigate }: RelatoriosProps) {
   const relatorioRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const historicoRaw = localStorage.getItem(chaveHistorico);
-    const historico = historicoRaw ? JSON.parse(historicoRaw) : [];
+    if (usuario.id) {
+      buscarHistoricoBackend();
+    }
+  }, []);
+
+  async function buscarHistoricoBackend() {
+    try {
+      const resposta = await fetch(`${API_URL}/vendas/usuario/${usuario.id}`);
+      if (resposta.ok) {
+        const historico = await resposta.json();
+        processarDados(historico);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar relatórios no backend", error);
+    }
+  }
+
+  function processarDados(historico: any[]) {
     const totalVendido = historico.reduce((sum: number, venda: any) => sum + venda.total, 0);
     const qtdPedidos = historico.length;
     const ticket = qtdPedidos > 0 ? totalVendido / qtdPedidos : 0;
+    
     setVendasTotais(totalVendido);
     setTotalPedidos(qtdPedidos);
     setTicketMedio(ticket);
 
     const contagemProdutos: Record<string, { quantidade: number, receita: number }> = {};
+    const contagemPagamentos: Record<string, number> = { "Pix": 0, "Cartão": 0, "Dinheiro": 0 };
+
     historico.forEach((venda: any) => {
-      venda.itens.forEach((item: any) => {
+      if (contagemPagamentos[venda.pagamento] !== undefined) {
+        contagemPagamentos[venda.pagamento] += venda.total;
+      }
+
+      const itensDaVenda = typeof venda.itens === "string" ? JSON.parse(venda.itens) : venda.itens;
+
+      itensDaVenda.forEach((item: any) => {
         if (!contagemProdutos[item.nome]) {
           contagemProdutos[item.nome] = { quantidade: 0, receita: 0 };
         }
@@ -47,13 +73,6 @@ export default function Relatorios({ onNavigate }: RelatoriosProps) {
 
     setProdutosVendidos(listaProdutos);
 
-    const contagemPagamentos: Record<string, number> = { "Pix": 0, "Cartão": 0, "Dinheiro": 0 };
-    historico.forEach((venda: any) => {
-      if (contagemPagamentos[venda.pagamento] !== undefined) {
-        contagemPagamentos[venda.pagamento] += venda.total;
-      }
-    });
-
     const listaPagamentos = Object.keys(contagemPagamentos).map(metodo => ({
       metodo,
       valor: contagemPagamentos[metodo],
@@ -61,7 +80,7 @@ export default function Relatorios({ onNavigate }: RelatoriosProps) {
     })).filter(p => p.valor > 0);
 
     setPagamentos(listaPagamentos);
-  }, [chaveHistorico]);
+  }
 
   const handleExport = async () => {
     if (!relatorioRef.current) return;

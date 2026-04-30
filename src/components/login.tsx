@@ -21,7 +21,6 @@ export default function Login({ onNavigate }: LoginProps) {
     setErro("");
     setSucesso("");
 
-    // Validação Básica
     if (!email || !senha) {
       setErro("Preencha todos os campos obrigatórios.");
       return;
@@ -54,7 +53,6 @@ export default function Login({ onNavigate }: LoginProps) {
       }
 
       try {
-        //requisição POST para a rota /cadastro
         const resposta = await fetch(`${API_URL}/cadastro`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -81,7 +79,6 @@ export default function Login({ onNavigate }: LoginProps) {
     }
 
     try {
-      //requisição POST para a rota /login
       const resposta = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

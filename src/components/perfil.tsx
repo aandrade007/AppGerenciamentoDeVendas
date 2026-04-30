@@ -9,12 +9,8 @@ interface PerfilProps {
 export default function Perfil({ onNavigate }: PerfilProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
-  
-  // Dados do usuário
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
-  
-  // Estados para alteração de senha
   const [senhaAtual, setSenhaAtual] = useState("");
   const [novaSenha, setNovaSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
@@ -39,12 +35,10 @@ export default function Perfil({ onNavigate }: PerfilProps) {
       return;
     }
 
-    // 1. Atualiza o usuário logado atual
     const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado") || "{}");
     const userAtualizado = { ...usuarioLogado, nome };
     localStorage.setItem("usuarioLogado", JSON.stringify(userAtualizado));
 
-    // 2. Atualiza a lista criptografada de usuários
     const dadosCripto = localStorage.getItem("usuarios");
     if (dadosCripto) {
       const usuarios = Seguranca.descriptografar(dadosCripto) || [];
@@ -70,18 +64,15 @@ export default function Perfil({ onNavigate }: PerfilProps) {
       return;
     }
 
-    // Busca o banco de usuários para atualizar a senha
     const dadosCripto = localStorage.getItem("usuarios");
     const usuarios = dadosCripto ? Seguranca.descriptografar(dadosCripto) || [] : [];
     const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado") || "{}");
 
-    // Verifica se a senha atual está correta
     if (usuarioLogado.senha !== senhaAtual) {
       setErro("A senha atual está incorreta.");
       return;
     }
 
-    // Atualiza o array de usuários
     const novosUsuarios = usuarios.map((u: any) => 
       u.email === email ? { ...u, senha: novaSenha } : u
     );
@@ -101,7 +92,6 @@ export default function Perfil({ onNavigate }: PerfilProps) {
     }
   };
 
-  // Pega as iniciais
   const getInitials = (name: string) => {
     if (!name) return "US";
     const parts = name.split(" ");
@@ -111,8 +101,7 @@ export default function Perfil({ onNavigate }: PerfilProps) {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col font-sans pb-10">
-      
-      {/* HEADER */}
+
       <div className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-20">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -146,8 +135,7 @@ export default function Perfil({ onNavigate }: PerfilProps) {
       </div>
 
       <main className="px-6 py-6 space-y-6 max-w-md mx-auto w-full">
-        
-        {/* FOTO DO PERFIL */}
+
         {!isChangingPassword && (
           <div className="flex flex-col items-center">
             <div className="relative">
@@ -165,7 +153,6 @@ export default function Perfil({ onNavigate }: PerfilProps) {
           </div>
         )}
 
-        {/* TELA DE ALTERAR SENHA */}
         {isChangingPassword ? (
           <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-4">
             <div>
@@ -215,13 +202,11 @@ export default function Perfil({ onNavigate }: PerfilProps) {
             </button>
           </div>
         ) : (
-          /* TELA DE PERFIL / INFORMAÇÕES PESSOAIS */
           <>
             <div>
               <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Informações Pessoais</h3>
               <div className="bg-white p-2 rounded-2xl border border-gray-200 shadow-sm">
                 
-                {/* Campo Nome */}
                 <div className="p-3">
                   <label className="text-xs font-semibold text-gray-500">Nome Completo</label>
                   <div className="flex items-center gap-3 mt-1">
@@ -238,7 +223,6 @@ export default function Perfil({ onNavigate }: PerfilProps) {
 
                 <div className="h-px bg-gray-100 mx-4"></div>
 
-                {/* Campo Email */}
                 <div className="p-3">
                   <label className="text-xs font-semibold text-gray-500">E-mail (Login)</label>
                   <div className="flex items-center gap-3 mt-1">
@@ -254,7 +238,6 @@ export default function Perfil({ onNavigate }: PerfilProps) {
 
               </div>
 
-              {/* Botões de Salvar Edição */}
               {isEditing && (
                 <div className="flex gap-3 mt-4">
                   <button
@@ -273,7 +256,6 @@ export default function Perfil({ onNavigate }: PerfilProps) {
               )}
             </div>
 
-            {/* CONFIGURAÇÕES E SAIR */}
             {!isEditing && (
               <div>
                 <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Configurações e Segurança</h3>

@@ -25,7 +25,6 @@ export default function Vendas({ onNavigate }: VendasProps) {
   const [carrinho, setCarrinho] = useState<ItemVenda[]>([]);
   const [formaPagamento, setFormaPagamento] = useState<string>("");
 
-  // Busca os produtos direto do banco de dados ao carregar a tela
   useEffect(() => {
     if (usuario.id) {
       buscarProdutosDoBanco();
@@ -91,7 +90,6 @@ export default function Vendas({ onNavigate }: VendasProps) {
 
   const subtotal = carrinho.reduce((total, item) => total + item.precoVenda * item.quantidadeCarrinho, 0);
 
-  // Envia a venda para o Backend!
   async function finalizarVenda() {
     if (carrinho.length === 0) {
       alert("O carrinho está vazio!");
@@ -118,7 +116,6 @@ export default function Vendas({ onNavigate }: VendasProps) {
         alert(`Venda finalizada com sucesso!\nTotal: R$ ${subtotal.toFixed(2)}\nPagamento: ${formaPagamento}`);
         setCarrinho([]);
         setFormaPagamento("");
-        // Atualiza a tela puxando o estoque novo (já descontado) do servidor
         buscarProdutosDoBanco(); 
       } else {
         alert("Erro ao registrar a venda.");

@@ -2,7 +2,13 @@
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
+<<<<<<< HEAD
 Currently, two official plugins are available:
+=======
+---
+## Protótipo no [Figma](https://www.figma.com/design/mJJOfjB9PuBDPMkZ6xPSFH/ProtSalesMaster?node-id=0-1&t=6dEkDMxxCqG7cRHh-1)
+<br>
+>>>>>>> 82f9a8a4ed2ac1532f1438fa6014a3990a5f6352
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
